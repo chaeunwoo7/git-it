@@ -1,0 +1,44 @@
+# 1. Install jenkins
+sudo zypper addrepo http://pkg.jenkins-ci.org/opensuse/ jenkins
+sudo zypper install jenkins
+# You would be asked something like this:
+# Do you want to reject the key, trust temporarily, or trust always? [r/t/a/?] (r): t
+# Overall download size: 115.9 MiB. After the operation, additional 159.9 MiB will be used.
+# Continue? [y/n/?] (y): y
+
+# 2. Start jenkins
+sudo /etc/init.d/jenkins start
+
+# 3. Configure Jenkins
+# Go to Manage Jenkins> Plugins > Available Plugins> GIthub API Plugin
+# select and install with restart
+
+# 4. Configure System:
+# Go to Manage Jenkins > configure
+# Jenkins Location
+
+# 5. Add Git User credential
+git config --global user.name "Jenkins"
+git config --global user.email "jenkins@dev.server.com"
+
+# 6. Setup SSH keys 
+su -s /bin/bash jenkins
+cd ~
+ssh-keygen -t rsa
+
+# 7. Add public key to ~/.git/authorized_keys of the server, to which jenkins will deploy the application
+
+# 8. Create a new job for your application
+
+# 9. Remove or uninstall Jenkins: https://gist.github.com/leveret/6766089
+
+# NOTE: In case, if jenkins throws errors on directory exists, it can be solved by rm -rf <workspace/job name>
+# Permission denied error:
+# http://stackoverflow.com/questions/6515039/jenkins-git-permission-denied-publickey/8143432#8143432
+
+# Error encountered in setting up Ruby on Rails app:
+# 1. SQLITE error:
+# "ActiveRecord::StatementInvalid:
+#    SQLite3::SQLException: near "SAVEPOINT": syntax error: SAVEPOINT active_record_1"
+# SOLUTION: https://gist.github.com/leveret/6762526
+# 2. bundle install error for jenkins user is mostly permission error, it can be fixed by giving right permission to jenkins user
